@@ -37,3 +37,11 @@ module "aws-ecr" {
   ecr_repositories = element(var.ecr_repositories, count.index)
 }
 
+module "aws-route53" {
+  source = "./terraform-modules/aws-route53"
+
+  hosted_zone_name  = var.hosted_zone_name
+  record_name       = var.record_name
+  record_type       = var.record_type
+  records           = module.aws-instance.instance_attributes.public_ip
+}
