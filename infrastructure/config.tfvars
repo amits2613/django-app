@@ -8,5 +8,5 @@ from_port = 0
 
 ecr_repositories = ["django-helloworld-app"]
 
-ami_id = "value"
+ami_id = "ami-slkj56638s"
 instance_type = "t2.micro"

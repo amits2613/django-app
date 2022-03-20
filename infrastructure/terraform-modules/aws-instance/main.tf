@@ -4,6 +4,14 @@ resource "aws_instance" "web" {
   key_name = aws_key_pair.deployer.id
   vpc_security_group_ids = var.vpc_security_group_ids 
   subnet_id = var.subnet_id
+  iam_instance_profile = aws_iam_instance_profile.django_profile.id = 
+  user_data = var.user_data
+
+  provisioner "file" {
+    source      = "${path.root}/manifests/"
+    destination = "/tmp/manifests"
+  }
+
 
   tags = {
     Name = "${var.environment}-instance"
@@ -25,5 +33,6 @@ resource "aws_iam_instance_profile" "django_profile" {
   name = "${var.environment}-instance-profile"
   role = aws_iam_role.role.name
 }
+
 
 

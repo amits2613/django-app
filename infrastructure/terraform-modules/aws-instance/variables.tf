@@ -19,3 +19,7 @@ variable "vpc_security_group_ids" {
 variable "subnet_id" {
     default = "subnet id where instance will launch"
 }
+
+variable "user_data" {
+    description = "user data that will pass while launching aws instance"
+}

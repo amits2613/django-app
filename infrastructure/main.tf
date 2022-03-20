@@ -27,7 +27,7 @@ module "aws-instance" {
   vpc_security_group_ids    = module.instance-securitygroup.security-group-attributes.id
   subnet_id                 = module.aws-vpc.vpc_attributes.public.*.id
   environment               = var.environment
-
+  user_data                 = "${file(path.cwd/scripts/install_minikube.sh)}"
 }
 
 module "aws-ecr" {
@@ -36,3 +36,4 @@ module "aws-ecr" {
   count = length(var.ecr_repositories)
   ecr_repositories = element(var.ecr_repositories, count.index)
 }
+
