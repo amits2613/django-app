@@ -20,7 +20,7 @@ module "instance-securitygroup" {
 }
 
 module "aws-instance" {
-  source = "./terraform-modules/aws-securitygroup"
+  source = "./terraform-modules/aws-instance"
 
   ami_id                    = var.ami_id
   instance_type             = var.instance_type

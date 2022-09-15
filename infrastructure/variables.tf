@@ -1,4 +1,6 @@
-variable "environment" {}
+variable "environment" {
+  description = "Name of environment"
+}
 
 variable "vpc_cidr_block" {
   type = string
