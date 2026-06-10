@@ -2,13 +2,13 @@ name: Auto-Retarget Release Blockers
 
 on:
   pull_request:
-    types: [labeled, reopened]
+    types: [labeled, synchronized, reopened]
 
 jobs:
   retarget:
     if: |
-      (github.event.action == 'labeled' && github.event.label.name == 'release-blocker') ||
-      (github.event.action == 'reopened' && contains(join(github.event.pull_request.labels.*.name, ','), 'release-blocker'))
+      (github.event.action == 'labeled' && github.event.label.name == 'release-ready') ||
+      (github.event.action == 'reopened' && contains(join(github.event.pull_request.labels.*.name, ','), 'release-ready'))
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -34,13 +34,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           RELEASE_BRANCH: ${{ steps.release_branch.outputs.branch }}
-          OLD_BASE: ${{ github.base_ref }}
         run: |
           gh api \
             --method PATCH \
             /repos/${{ github.repository }}/pulls/$PR_NUMBER \
             -f base="$RELEASE_BRANCH"
 
+      - name: Comment on PR
+        if: steps.release_branch.outputs.branch != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RELEASE_BRANCH: ${{ steps.release_branch.outputs.branch }}
+          OLD_BASE: ${{ github.base_ref }}
+        run: |
           gh pr comment "$PR_NUMBER" \
             --repo ${{ github.repository }} \
-            --body "release-blocker label detected. PR base changed from \`$OLD_BASE\` to \`$RELEASE_BRANCH\` (raised by @${{ github.event.pull_request.user.login }})."
+            --body "release-ready label detected. PR base changed from \`$OLD_BASE\` to \`$RELEASE_BRANCH\` (raised by @${{ github.event.pull_request.user.login }})."
