@@ -42,4 +42,5 @@ jobs:
             -f base="$RELEASE_BRANCH"
 
           gh pr comment "$PR_NUMBER" \
+            --repo ${{ github.repository }} \
             --body "release-blocker label detected. PR base changed from \`$OLD_BASE\` to \`$RELEASE_BRANCH\` (raised by @${{ github.event.pull_request.user.login }})."
