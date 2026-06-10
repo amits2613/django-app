@@ -9,7 +9,7 @@ from_port = 0
 ecr_repositories = ["django-helloworld-app"]
 
 ami_id = "ami-slkj56638s"
-instance_type = "t2.micro"
+instance_type = "t3.micro"
 
 hosted_zone_name = "amit.com"
 record_name = "django.amit.com"
